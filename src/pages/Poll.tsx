@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../common/hooks";
 import { addAnswerForAuth, selectAuth } from "../reducers/auth";
 import { addAnswerQuestion, selectQuestions } from "../reducers/questions";
@@ -7,7 +7,6 @@ import { User, options, Answer } from "../types";
 import { saveQuestionAnswer } from "../utils/api";
 
 const Poll = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const currUser = useAppSelector(selectAuth) as User;
   const questions = useAppSelector(selectQuestions);
@@ -56,12 +55,20 @@ const Poll = () => {
     dispatch(addAnswerQuestion(answer));
     dispatch(addAnswer(answer));
     dispatch(addAnswerForAuth(answer));
-    navigate("/");
   };
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mt-9">Poll by {author.id}</h1>
+      <div className="flex justify-center">
+        <h1 className="text-3xl font-bold mt-9">Poll by {author.id}</h1>
+      </div>
+      <div className="flex justify-center">
+        <img
+          src={author.avatarURL}
+          className="h-24 w-24 rounded-full"
+          alt="avatar"
+        />
+      </div>
 
       <div className="flex justify-center">
         <h2 className="text-2xl font-bold mt-6">Would you rather?</h2>

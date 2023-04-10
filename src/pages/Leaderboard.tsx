@@ -34,6 +34,11 @@ const Leaderboard = () => {
                     scope="row"
                     className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                   >
+                    <img
+                      src={user.avatarURL}
+                      className="h-10 w-10 rounded-full"
+                      alt="avatar"
+                    />
                     {user.name}
                   </th>
                   <td className="px-6 py-4">

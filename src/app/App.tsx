@@ -27,11 +27,13 @@ const App = () => {
             <Route element={<Layout />}>
               <Route path="/" element={<Dashboard />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/polls/:id" element={<Poll />} />
-              <Route path="/polls/new" element={<PollCreation />} />
+              <Route path="/questions/:id" element={<Poll />} />
+              <Route path="/add" element={<PollCreation />} />
             </Route>
           </Route>
-          <Route path="/login" element={<Login />} />
+          <Route element={<Layout />}>
+            <Route path="/login" element={<Login />} />
+          </Route>
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </div>

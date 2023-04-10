@@ -12,7 +12,9 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   if (authedUser.id) {
-    return <Navigate to="/" />;
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectUrl = urlParams.get("redirectTo");
+    return <Navigate to={redirectUrl || "/"} />;
   }
 
   const handleUsername = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,7 +34,6 @@ const Login = () => {
     );
     if (!!user) {
       dispatch(login(user));
-      return <Navigate to="/" />;
     }
     setUsername("");
     setPassword("");

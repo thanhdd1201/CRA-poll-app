@@ -18,7 +18,7 @@ const QuestionBox = (props: { question: Question }) => {
         <span className="text-lg">{question.author}</span>
         <span className="text-base">{dateFormat}</span>
         <Link
-          to={`/polls/${question.id}`}
+          to={`/questions/${question.id}`}
           className="mt-4 mb-3 text-cyan-800 text-xl border w-3/4 border-stone-700 text-center hover:bg-primary-700 rounded-md hover:text-white"
         >
           Detail
