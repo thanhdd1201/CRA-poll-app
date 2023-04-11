@@ -7,7 +7,9 @@ const Leaderboard = () => {
   const usersArray = Object.values(users);
   const sortedUsers = usersArray.sort(
     (first: User, second: User) =>
-      Object.keys(second.answers).length - Object.keys(first.answers).length
+      Object.keys(second.answers).length +
+      second.questions.length -
+      (Object.keys(first.answers).length + first.questions.length)
   );
   return (
     <>

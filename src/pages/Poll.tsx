@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Navigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../common/hooks";
 import { addAnswerForAuth, selectAuth } from "../reducers/auth";
 import { addAnswerQuestion, selectQuestions } from "../reducers/questions";
@@ -12,20 +13,35 @@ const Poll = () => {
   const questions = useAppSelector(selectQuestions);
   const users = useAppSelector(selectUsers);
   const { id } = useParams<{ id: string }>();
+  const [percentageOptOne, setPercentageOptOne] = useState("");
+  const [percentageOptTwo, setPercentageOptTwo] = useState("");
 
-  if (!id) {
-    throw new Error();
-  }
-  const question = questions[id];
-  const author = Object.values(users).find(
-    (user) => user.id === question.author
-  );
-  if (!author) {
-    throw new Error();
+  const question = questions[id as string];
+  const author =
+    question &&
+    Object.values(users).find((user) => user.id === question.author);
+  if (!author || !question) {
+    return <Navigate to="/404" />;
   }
   const hasVotedForOptionOne = question.optionOne.votes.includes(currUser.id);
   const hasVotedForOptionTwo = question.optionTwo.votes.includes(currUser.id);
   const hasVoted = hasVotedForOptionOne || hasVotedForOptionTwo;
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    const numberVotesTotal =
+      question.optionOne.votes.length + question.optionTwo.votes.length;
+    setPercentageOptOne(
+      Math.round(
+        (question.optionOne.votes.length / numberVotesTotal) * 100
+      ).toFixed(2) + "%"
+    );
+    setPercentageOptTwo(
+      Math.round(
+        (question.optionTwo.votes.length / numberVotesTotal) * 100
+      ).toFixed(2) + "%"
+    );
+  }, [question.optionOne.votes.length, question.optionTwo.votes.length]);
 
   const handleOptionOne = async (e: React.MouseEvent<HTMLElement>) => {
     e.preventDefault();
@@ -60,11 +76,11 @@ const Poll = () => {
   return (
     <div>
       <div className="flex justify-center">
-        <h1 className="text-3xl font-bold mt-9">Poll by {author.id}</h1>
+        <h1 className="text-3xl font-bold mt-9">Poll by {author?.id}</h1>
       </div>
       <div className="flex justify-center">
         <img
-          src={author.avatarURL}
+          src={author?.avatarURL}
           className="h-24 w-24 rounded-full"
           alt="avatar"
         />
@@ -89,8 +105,8 @@ const Poll = () => {
           ) : (
             <p className="text-xs">
               {hasVotedForOptionOne
-                ? `Voted. Total votes: ${question.optionOne.votes.length}`
-                : `Total votes: ${question.optionOne.votes.length}`}
+                ? `Voted. Total votes: ${question.optionOne.votes.length}. Total percent: ${percentageOptOne}`
+                : `Total votes: ${question.optionOne.votes.length}. Total percent: ${percentageOptOne}`}
             </p>
           )}
         </button>
@@ -106,8 +122,8 @@ const Poll = () => {
           ) : (
             <p className="text-xs">
               {hasVotedForOptionTwo
-                ? `Voted. Total votes: ${question.optionTwo.votes.length}`
-                : `Total votes: ${question.optionTwo.votes.length}`}
+                ? `Voted. Total votes: ${question.optionTwo.votes.length}. Total percent: ${percentageOptTwo}`
+                : `Total votes: ${question.optionTwo.votes.length}. Total percent: ${percentageOptTwo}`}
             </p>
           )}
         </button>

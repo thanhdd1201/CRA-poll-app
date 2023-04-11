@@ -34,7 +34,9 @@ const App = () => {
           <Route element={<Layout />}>
             <Route path="/login" element={<Login />} />
           </Route>
-          <Route path="*" element={<ErrorPage />} />
+          <Route element={<Layout />}>
+            <Route path="*" element={<ErrorPage />} />
+          </Route>
         </Routes>
       </div>
     </Fragment>
